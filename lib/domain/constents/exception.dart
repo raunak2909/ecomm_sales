@@ -19,6 +19,11 @@ class BadRequestException extends ApiException {
       : super(title: "Invalid Request", eMsg: errorMsg);
 }
 
+class BadResponseException extends ApiException {
+  BadResponseException({required String errorMsg})
+      : super(title: "Invalid Response", eMsg: errorMsg);
+}
+
 class UnauthorisedException extends ApiException {
   UnauthorisedException({required String errorMsg})
       : super(title: "Unauthorised", eMsg: errorMsg);

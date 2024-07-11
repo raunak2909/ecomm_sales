@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sales/repository/screen/signup_screen.dart';
-
-import '../utils/font_style.dart';
-import '../widgets/cust_buttons.dart';
-import '../widgets/cust_tf_inputdecoration.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sales/repository/screen/home/ui/homescreen.dart';
+import 'package:sales/repository/screen/login/bloc/login_bloc.dart';
+import 'package:sales/repository/screen/login/ui/signup_screen.dart';
+import '../../../utils/font_style.dart';
+import '../../../widgets/cust_buttons.dart';
+import '../../../widgets/cust_tf_inputdecoration.dart';
 
 class SigninScreen extends StatefulWidget {
   @override
@@ -79,7 +81,35 @@ class SigninScreenState extends State<SigninScreen> {
                     Container(
                         height: 45,
                         width: 220,
-                        child: CustButtons(text: "Login", onPress: () {})),
+                        child: BlocListener<LoginBloc, LoginState>(
+                          listener: (_, state){
+                            if(state is LoginLoadingState){
+                              ///show snackbar
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Row(
+                                children: [
+                                  CircularProgressIndicator(),
+                                  mSpacer(),
+                                  Text('Logging - in...')
+                                ],
+                              )));
+
+                            } else if(state is LoginSuccessState){
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Logged in Successfully!!')));
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return HomeScreen();
+                                },
+                              ));
+                            } else if(state is LoginFailedState){
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${state.errorMsg}')));
+                            }
+                          },
+                          child: CustButtons(text: "Login", onPress: () {
+                            /*context.read<LoginBloc>().add(LoginUser(email: e, pass: pass));
+                            BlocProvider.of<LoginBloc>(context, listen: false).add(LoginUser(email: e, pass: pass));*/
+
+                          })),
+                    ),
                     mSpacer(),
                     Text(
                       'or',

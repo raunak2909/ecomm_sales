@@ -23,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   callApi() {
     apiHelper = ApiHelper();
-    apiHelper!.postApi(url: UrlHelper.Register_User_URL, mData: {
+   var data = apiHelper!.postApi(url: UrlHelper.Register_User_URL, mData: {
       'name': nameController.text,
       'mobile_number': mobilController.text,
       'email': emailController.text,
@@ -31,6 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }).then(
       (value) {
         if (value.massage != null) {
+
           print(" get Dat " + value.message);
         } else {
           print(value.status);

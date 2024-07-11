@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sales/data/ListData/main_catgory.dart';
+import 'package:sales/repository/screen/home/bloc/home_bloc.dart';
+import 'package:sales/repository/screen/home/bloc/home_state.dart';
 import 'package:sales/repository/utils/font_style.dart';
 import 'package:sales/repository/widgets/cate_container.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -263,37 +266,44 @@ class HomeScreenState extends State<HomeScreen> {
   Widget category() {
     return SizedBox(
       height: MediaQuery.sizeOf(context).height / 8,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: MainCatgory().catPro.length,
-        itemBuilder: (context, index) {
-          var item = MainCatgory().catPro;
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 20,
-              top: 10,
-              right: index == imgList.length - 1 ? 20 : 0,
-            ),
-            child: Column(
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    "${item[index]['catImg']}",
-                    fit: BoxFit.fill,
-                    width: 80,
-                    height: 80,
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (_, state){
+          if(state is HomeLoadedState){
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: state.mCat.length,
+              itemBuilder: (context, index) {
+                var item = state.mCat[index];
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    top: 10,
+                    right: index == imgList.length - 1 ? 20 : 0,
                   ),
-                ),
-                Center(
-                    child: Text(
-                  "${item[index]['catName']}",
-                  style: mFontStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ))
-              ],
-            ),
-          );
+                  child: Column(
+                    children: [
+                      ClipOval(
+                        child: Image.asset('${item.imgUrl}',
+                          //"${item[index]['catImg']}",
+                          fit: BoxFit.fill,
+                          width: 80,
+                          height: 80,
+                        ),
+                      ),
+                      Center(
+                          child: Text(
+                            "${item.name}",
+                            style: mFontStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                          ))
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+          return Container();
         },
       ),
     );

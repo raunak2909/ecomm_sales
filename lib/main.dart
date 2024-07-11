@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sales/data/remote/api_helper.dart';
+import 'package:sales/repository/screen/login/bloc/login_bloc.dart';
 import 'package:sales/repository/screen/onboarding_Screen.dart';
 
 void main() {
@@ -18,6 +21,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const OnboardingScreen());
+        home: BlocProvider(
+          create: (context) => LoginBloc(apiHelper: ApiHelper()),
+          child: const OnboardingScreen(),
+        ));
   }
 }

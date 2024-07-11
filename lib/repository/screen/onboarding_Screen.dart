@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sales/repository/screen/signin_screen.dart';
+import 'package:sales/repository/screen/login/ui/signin_screen.dart';
 import 'package:sales/repository/widgets/cust_buttons.dart';
 
 class OnboardingScreen extends StatelessWidget {
